@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
+// import jdk.nashorn.internal.ir.RuntimeNode.Request;	
 
 public class TCPServer {
 
@@ -13,7 +13,7 @@ public class TCPServer {
 			while(true) {
 				Socket clientSocket = listenSocket.accept();
 				
-				if(!handler.search(clientSocket)) {
+				if(!handler.searchSocket(clientSocket)) {
 					handler.addClient(clientSocket);
 				}
 				int ind = handler.getSocketIndex(clientSocket);
@@ -42,12 +42,19 @@ class Connection extends Thread {
     }
     
     public String getRequest(){
-        String request = in.readUTF();
+		String request = null;
+		try {
+			request = in.readUTF();	
+		} catch (Exception e) {System.out.println("ServergetRequest: " + e.getMessage());
+		}
         return request;
     }
 
     public void sendResponse(String response){
-        out.writeUTF(response);
+		try {
+			out.writeUTF(response);
+		} catch (Exception e) {System.out.println("ServerSendRequest: " + e.getMessage());
+		}
     }
 
 	public void run(){
@@ -72,9 +79,10 @@ class Connection extends Thread {
 			
 			this.sendResponse(strResp);
 
-		}catch (EOFException e){System.out.println("EOF:"+e.getMessage());
-		} catch(IOException e) {System.out.println("readline:"+e.getMessage());
-		} finally{ try {clientSocket.close();}catch (IOException e){/*close failed*/}}
+		// }
+		// catch (EOFException e){System.out.println("EOF:"+e.getMessage());
+		// } catch(IOException e) {System.out.println("readline:"+e.getMessage());
+		} finally{ try {clientSocket.close();}catch (Exception e){/*close failed*/}}
 		
     }
 }

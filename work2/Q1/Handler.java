@@ -5,7 +5,7 @@ import java.util.List;
 public class Handler {
 	public static List<Socket> clients = new ArrayList<Socket>();
 	
-	public static boolean searchSocket(Socket socket){
+	public boolean searchSocket(Socket socket){
 		for (Socket s : clients) {
 			if(s.equals(socket))
 				return true;
