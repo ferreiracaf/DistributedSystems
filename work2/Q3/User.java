@@ -1,35 +1,35 @@
-import java.net.*;
-import java.io.*;
 import java.util.*;
 
 public class User{
+    private static double resp;
 
     public static void main(String[] args){
-        
-        TCPClient userClient = null;
         try {
+            Proxy userProxy = new Proxy();
             Scanner s = new Scanner(System.in);
-            System.out.println("Please inform the client port:");
-            int port = s.nextInt(); 
-            userClient = new TCPClient(port);
 
-            System.out.println("Now inform the port required to stablish the chat connection:");
-            int outPort = s.nextInt();
-
-            System.out.println("Please, chat!");
-            Getter getter = new Getter(userClient);
-            while(true) {
-                String strMsg = s.nextLine();
-                if (strMsg.equals("/quit")) {
-                    break;
-                }
-                userClient.sendRequest(strMsg+"@"+String.valueOf(outPort));
+            System.out.println("Please inform the client port: ");
+            double port = S.nextDouble();
+            
+            System.out.println("Client command: \n1 - Para conectar\n2 - Visualizar número de clientes conectados");
+            Double command = S.nextLine();
+            
+            if(commad == 1){
+                userProxy.initChat();
+            }else if(command == 2){
+                userProxy.showClients();
+            }else{
+                System.out.println("Comando inválido!");
             }
+
+            // double resp = userProxy.userResponse();
+
+            System.out.println(resp);
             
             s.close();
-            
+            userProxy.close();    
         } catch (Exception e) {
-            System.out.println("User main: " + e.getMessage());
-        }finally {try {userClient.close();}catch (Exception e){/*close failed*/}}
+            System.out.println("User: "+e.getMessage());
+        }
     }
 }
